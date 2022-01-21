@@ -24,7 +24,7 @@ function App({ isInitiallyLogged }) {
  
 
   return (
-    <Router>
+   
     <AuthContextProvider value={{isLogged, handleLogout, handleLogin}}>
         <div className='App'>
           <Switch>
@@ -51,7 +51,7 @@ function App({ isInitiallyLogged }) {
         </div>
     </AuthContextProvider>
 
-    </Router>
+    
   );
 }
 

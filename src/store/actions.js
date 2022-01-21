@@ -1,4 +1,4 @@
-import { AUTH_LOGIN, AUTH_LOGOUT } from "./types";
+import { ADVERTS_LOADED, AUTH_LOGIN, AUTH_LOGOUT } from "./types";
 
 export function authLogin() {
     return {
@@ -9,5 +9,12 @@ export function authLogin() {
 export function authLogout() {
     return {
         type: AUTH_LOGOUT,
+    };
+}
+
+export function advertsLoaded(adverts) {
+    return {
+        type: ADVERTS_LOADED,
+        payload: adverts,
     };
 }

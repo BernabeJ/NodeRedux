@@ -1,20 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Root from './components/Root';
 import './index.css';
 import App from './App';
 import storage from './utils/storage';
 import { setAuthorizationHeader } from './api/client';
 import 'bootstrap/dist/css/bootstrap.css';
+import configureStore from './store'
+
+
+
+const store = configureStore();
+
 
 const accessToken = storage.get('auth')
 setAuthorizationHeader(accessToken);
 
 
+
 ReactDOM.render(
-  // <React.StrictMode>
-    <App isInitiallyLogged={!!accessToken }/>
-  /* </React.StrictMode> */
-  ,
+  <React.StrictMode>
+    <Root store={store}>
+       <App isInitiallyLogged={!!accessToken}/>
+    </Root>
+  </React.StrictMode>, 
   document.getElementById('root')
 );
 
