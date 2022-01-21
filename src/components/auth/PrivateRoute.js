@@ -1,20 +1,27 @@
-import { useContext } from "react";
+import { connect } from "react-redux";
 import { Redirect, Route } from "react-router-dom/cjs/react-router-dom.min";
-import AuthContext from "./context";
+import { getIsLogged } from "../../store/selectors";
 
-const PrivateRoute = props =>{
-    const { isLogged } = useContext(AuthContext)
-    return isLogged  ? (
-        <Route{...props} /> 
-    ):(
-            <Route>
-                {({ location }) => (
-                <Redirect to={{ pathname: "/login", state: {from: location} }} />
+
+const PrivateRoute = ({isLogged, ...props }) => {
+   
+    return isLogged ? (
+        <Route{...props} />
+    ) : (
+        <Route>
+            {({ location }) => (
+                <Redirect to={{ pathname: "/login", state: { from: location } }} />
                 
-                )}
+            )}
         </Route>
     );
+};
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        isLogged: getIsLogged(state),
+    }
 }
     
 
-export default PrivateRoute;
+export default connect(mapStateToProps)(PrivateRoute);

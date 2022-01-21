@@ -5,19 +5,17 @@ import AdvertsPage from './components/anuncios/AdvertsPage';
 import AdvertPage from './components/anuncios/AdvertPage/AdvertPage';
 import NewAdvertsPage from './components/anuncios/NewAdvertsPage/NewAdvertsPage';
 import {LoginPage, PrivateRoute} from './components/auth'
-import { useState } from 'react';
-import { logout } from './components/auth/service';
-import { AuthContextProvider } from './components/auth/context';
 
-function App({ isInitiallyLogged }) {
-  const [isLogged, setIsLogged] = useState(isInitiallyLogged);
+
+function App() {
+  // const [isLogged, setIsLogged] = useState(isInitiallyLogged);
 
   const handleLogin = () => {
-    setIsLogged(true)
+    // setIsLogged(true)
   };  
 
   const handleLogout = () => {
-    logout().then(()=> setIsLogged(false));
+    // logout().then(()=> setIsLogged(false));
   }
 
   
@@ -25,7 +23,7 @@ function App({ isInitiallyLogged }) {
 
   return (
    
-    <AuthContextProvider value={{isLogged, handleLogout, handleLogin}}>
+   
         <div className='App'>
           <Switch>
             <Route
@@ -49,7 +47,7 @@ function App({ isInitiallyLogged }) {
           
           
         </div>
-    </AuthContextProvider>
+   
 
     
   );

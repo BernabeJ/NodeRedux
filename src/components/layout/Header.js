@@ -1,13 +1,22 @@
 import classNames from "classnames";
-import { ReactComponent as Icon } from '../../assets/logo.svg';
-import AuthContext from "../auth/context";
-import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import './Header.css';
-import NewAdvertPage from "../anuncios/NewAdvertsPage/NewAdvertsPage";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../auth/service";
+import { authLogout } from "../../store/actions";
+import { getIsLogged } from "../../store/selectors";
+
+
+
+
 
 function Header({ className }) {
-  const { isLogged, handleLogout } = useContext(AuthContext);
+  const isLogged = useSelector(getIsLogged);
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    logout().then(() => dispatch(authLogout()));
+  }
+
   return (
     <header className={classNames('header', className)}>
       <Link to="/">

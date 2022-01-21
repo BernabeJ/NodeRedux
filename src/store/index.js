@@ -4,11 +4,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 const rootReducer = combineReducers(reducers);
 
-const configureStore=()=>{
-    
-    const store = createStore(rootReducer, composeWithDevTools());
-    return store;
 
+const configureStore = (preloadedState) => {
+    const store = createStore(rootReducer, preloadedState,composeWithDevTools());
+    return store;
 }
 
 

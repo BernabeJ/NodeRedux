@@ -1,8 +1,9 @@
 import T from 'prop-types';
 import { useState } from "react";
 import {login} from '../service'
-import { AuthContextConsumer } from "../context";
+import { connect } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css'
+import { authLogin } from '../../../store/actions';
 
 
 
@@ -91,13 +92,15 @@ function LoginPage({onLogin, history, location}) {
 
 LoginPage.propTypes = {
     onLogin: T.func.isRequired,
+};
+
+const mapDispachtToProps = (dispatch) => {
+    return {
+        onLogin:()=> dispatch(authLogin()),
+    }
 }
 
 
-const ConnectedLoginPage = props => (
-    <AuthContextConsumer>
-        {auth => <LoginPage onLogin={auth.handleLogin} {...props} />}
-    </AuthContextConsumer>
-);
+const ConnectedLoginPage = connect(null,mapDispachtToProps)(LoginPage)
 
 export default ConnectedLoginPage;

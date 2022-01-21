@@ -10,18 +10,18 @@ import configureStore from './store'
 
 
 
-const store = configureStore();
 
 
 const accessToken = storage.get('auth')
-setAuthorizationHeader(accessToken);
+setAuthorizationHeader(accessToken );
+const store = configureStore({auth: !!accessToken});
 
 
 
 ReactDOM.render(
   <React.StrictMode>
     <Root store={store}>
-       <App isInitiallyLogged={!!accessToken}/>
+       <App />
     </Root>
   </React.StrictMode>, 
   document.getElementById('root')
