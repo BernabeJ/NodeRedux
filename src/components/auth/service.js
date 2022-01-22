@@ -6,6 +6,7 @@ export const login = (credentials, saveValue) => {
         setAuthorizationHeader(accessToken);
         if (saveValue) {
             storage.set('auth', accessToken)
+            console.log(saveValue, 'auth')
         }
     });
  

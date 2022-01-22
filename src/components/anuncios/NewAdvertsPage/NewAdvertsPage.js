@@ -169,7 +169,7 @@ console.log(options)
               <br /><br />
                     <button
                 type="submit"
-                className="newAdvertPage-submit"
+                className="btn btn-primary btn-lg btn-block"
                 variant="primary"
                 >
                 Let's go!

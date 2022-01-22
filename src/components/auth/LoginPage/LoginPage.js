@@ -1,20 +1,17 @@
 import T from 'prop-types';
 import { useState } from "react";
-import {login} from '../service'
 import { connect } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css'
-import { authLogin } from '../../../store/actions';
+import { authLogin} from '../../../store/actions';
+import { getUi } from '../../../store/selectors';
 
 
 
-function LoginPage({onLogin, history, location}) {
+function LoginPage({onLogin, isLoading, error, history, location}) {
     const [value, setValue] = useState({ email: "", password: "" })
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
     const [saveValue, setSaveValue] = useState(false)
 
-    const resetError = () => setError(null)
-
+    
     const handleChange = event => {
         setValue(prevState => ({
             ...prevState,
@@ -24,28 +21,21 @@ function LoginPage({onLogin, history, location}) {
     const guardarToken = () => {
         setSaveValue((prevState) => (prevState ? false : true));
     };
+    console.log(saveValue)
     
     const handleSubmit = async event => {
         event.preventDefault();
-        setIsLoading(true);
-        resetError();
-        try {
-            await login(value, saveValue)
-            setIsLoading(false)
-            onLogin();
-            const{from} = location.state || {from: {pathname : '/'}} 
-            history.replace(from)
-        } catch (error) {
-            setError(error);
-            setIsLoading(false)
-        } 
-
-    };
-
-
-
-   
-    return <div className='row'>
+        
+        //call to action
+            onLogin(value, history, location, );
+           
+            
+        }
+        
+        
+        
+        
+        return <div className='row'>
         <div className="col-md-4 offset-md-4">
             <div className='login-form bg-light mt-4 p-4'>
 
@@ -66,18 +56,18 @@ function LoginPage({onLogin, history, location}) {
                                 type="checkbox"
                                 value={saveValue}
                                 onChange={guardarToken}
-                            />
+                                />
                     <label className='form-check-label'>Remember me</label>
 
                         </div>
             </div>
 
-            <button className="w-100 btn btn-lg btn-primary" type="submit" variant="primary" disabled={isLoading || !value.email || !value.password}>
+            <button className="w-100 btn btn-lg btn-primary" type="submit" variant="primary" disabled={ isLoading || !value.email || !value.password}>
                 Login
             </button>
 
         </form>
-        {error && <div onClick={resetError} className="loginPage-error"> {error.message}</div>}
+        {/* {error && <div onClick={resetError} className="loginPage-error"> {error.message}</div>} */}
 
             </div>
                 </div>
@@ -89,18 +79,24 @@ function LoginPage({onLogin, history, location}) {
  
 };
 
+const mapStateToProps = state => {
+    return getUi(state)
+}
 
 LoginPage.propTypes = {
     onLogin: T.func.isRequired,
 };
 
-const mapDispachtToProps = (dispatch) => {
-    return {
-        onLogin:()=> dispatch(authLogin()),
-    }
+// const mapDispachtToProps = (dispatch) => {
+//     return {
+//         onLogin:(credentials, history, location, saveValue)=> dispatch(authLogin(credentials, history, location, saveValue)),
+//     }
+// }
+const mapDispachtToProps = {
+    onLogin: authLogin
 }
 
 
-const ConnectedLoginPage = connect(null,mapDispachtToProps)(LoginPage)
+const ConnectedLoginPage = connect(mapStateToProps,mapDispachtToProps)(LoginPage)
 
 export default ConnectedLoginPage;

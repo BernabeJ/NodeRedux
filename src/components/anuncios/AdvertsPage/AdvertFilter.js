@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getFilteredAds } from "../service";
-import Button from "../../common/Button";
+
 
 function AdvertFilter(props) {
   const [filter, setFilter] = useState({
