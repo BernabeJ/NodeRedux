@@ -3,30 +3,54 @@ import Layout from "../../layout/Layout"
 import { deleteAdvert, getAdverts } from "../service";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import './AdvertPage.css'
+import { getAdvert } from "../../../store/selectors";
+import { loadAdvert } from "../../../store/actions";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 
 
 function AdvertPage({ history, ...props }) {
-    const [product, setProduct] = useState();
-    const advertId = useParams(history).id;
-    console.log(product)
-
+  //   const [advert, setProduct] = useState();
+  const advertId = useParams(history).id;
+  console.log(advertId, 'advertID')
+  
+  // console.log(advert)
+  
+  const dispatch = useDispatch();
+  const advert = useSelector(getAdvert);
+  
+  //prueb
+  
+  //   const dispatch = useDispatch()
+  // const adverts = useSelector(getAdverts)
+  
+  
+  // // const [adverts, setAdverts] = useState([]);
+  // useEffect(() => {
+    //  dispatch(loadAdverts())
+    // }, [dispatch]);
+    // console.log(adverts, 'advertsLoaded')
+    
+    
     useEffect(() => {
-        async function getAd() {
-      try {
-        const ad = await getAdverts(advertId);
-        setProduct(ad);
-      } catch (error) {
-        if (error.status === 404){
-          history.replace('/404')
-        }else if(error.status === 401){
-          history.replace('/login')
-        }
-        console.error(error.message);
-      }
-    }
-    getAd();
-    }, [advertId, history]);
+      //     async function getAd() {
+        //   try {
+          //     const ad = await getAdverts(advertId);
+          //     setProduct(ad);
+          //   } catch (error) {
+            //     if (error.status === 404){
+              //       history.replace('/404')
+    //     }else if(error.status === 401){
+    //       history.replace('/login')
+    //     }
+    //     console.error(error.message);
+    //   }
+    // }
+    // getAd();
+      dispatch(loadAdvert(advertId))
+     ;
+  }, []);
+
     
      const handleDelete = () => {
     if (window.confirm('¿seguro que desea eliminar el producto?')){
@@ -35,19 +59,19 @@ function AdvertPage({ history, ...props }) {
   }
 
 
-    return product ? (
+    return advert ? (
         <Layout idPage="advert-page">
             <div className="container">
 
 
             <div className="images">
-                <img src={`${process.env.REACT_APP_API_BASE_URL}${product.photo}`} alt={product.productName} />
+                <img src={`${process.env.REACT_APP_API_BASE_URL}${advert.photo}`} alt={advert.productName} />
             </div>
-            <div className="product">
-            <h1>{product.name}</h1>
-            <h2>{product.price}€</h2>
-            <h2>{product.tags}</h2>
-                <h3>{product.sale ? (<p>"En venta"
+            <div className="advert">
+            <h1>{advert.name}</h1>
+            <h2>{advert.price}€</h2>
+            <h2>{advert.tags}</h2>
+                <h3>{advert.sale ? (<p>"En venta"
                     </p>) : (<p>"Compra"</p>)}</h3>
                     <div className="buttons">
 

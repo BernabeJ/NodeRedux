@@ -2,12 +2,12 @@ import T from 'prop-types';
 import { useState } from "react";
 import { connect } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css'
-import { authLogin} from '../../../store/actions';
+import { authLogin, uiResetError} from '../../../store/actions';
 import { getUi } from '../../../store/selectors';
 
 
 
-function LoginPage({onLogin, isLoading, error, history, location}) {
+function LoginPage({onLogin, isLoading, error,onResetError }) {
     const [value, setValue] = useState({ email: "", password: "" })
     const [saveValue, setSaveValue] = useState(false)
 
@@ -21,13 +21,13 @@ function LoginPage({onLogin, isLoading, error, history, location}) {
     const guardarToken = () => {
         setSaveValue((prevState) => (prevState ? false : true));
     };
-    console.log(saveValue)
+    console.log(saveValue,'auth')
     
     const handleSubmit = async event => {
         event.preventDefault();
         
         //call to action
-            onLogin(value, history, location, );
+           await onLogin(value);
            
             
         }
@@ -66,8 +66,13 @@ function LoginPage({onLogin, isLoading, error, history, location}) {
                 Login
             </button>
 
-        </form>
-        {/* {error && <div onClick={resetError} className="loginPage-error"> {error.message}</div>} */}
+                    </form>
+                    <br></br>
+                    <div>
+        
+        {error && <div onClick={onResetError} className="alert alert-danger"> {error.message}</div>}
+
+                    </div>
 
             </div>
                 </div>
@@ -87,14 +92,16 @@ LoginPage.propTypes = {
     onLogin: T.func.isRequired,
 };
 
-// const mapDispachtToProps = (dispatch) => {
-//     return {
-//         onLogin:(credentials, history, location, saveValue)=> dispatch(authLogin(credentials, history, location, saveValue)),
-//     }
-// }
-const mapDispachtToProps = {
-    onLogin: authLogin
+const mapDispachtToProps = (dispatch, saveValue) => {
+   
+    return {
+        onLogin: credentials => dispatch(authLogin(credentials, saveValue)),
+        onResetError: ()=> dispatch(uiResetError()),
+    }
 }
+// const mapDispachtToProps = {
+//     onLogin: authLogin
+// }
 
 
 const ConnectedLoginPage = connect(mapStateToProps,mapDispachtToProps)(LoginPage)

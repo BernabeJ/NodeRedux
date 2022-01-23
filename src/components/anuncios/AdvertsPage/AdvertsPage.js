@@ -15,6 +15,7 @@ function AdvertsPage({ history, ...props }) {
   useEffect(() => {
     getAllAdverts().then((adverts) => setAdverts(adverts));
   }, []);
+  // const adverts = useSelector(getAdverts)
 
   const dispatch = useDispatch()
 
@@ -22,7 +23,6 @@ function AdvertsPage({ history, ...props }) {
   // useEffect(() => {
   //   getAllAdverts().then((adverts) => dispatch(advertsLoaded(adverts)));
   // }, []);
-  // const adverts = useSelector(getAdverts)
   // console.log(advertsLoaded.payload, 'advertsLoaded')
   
  

@@ -1,11 +1,12 @@
 import {  useState } from 'react';
 import { Redirect, useHistory } from 'react-router';
 import Layout from '../../layout';
-import { createAdvert } from '../service';
+import { createAdvert } from '../../../store/actions';
 import React from 'react';
 import { getAdvertsTags } from '../service'
 import 'bootstrap/dist/css/bootstrap.css'
 import './NewAdvertsPage.css'
+import { useDispatch } from 'react-redux';
 
 
 
@@ -13,12 +14,12 @@ import './NewAdvertsPage.css'
 
 
 function NewAdvertPage({history, ...props}) {
-        
+  const dispatch = useDispatch();
     const [value, setValue] = useState({
       name: '', price: '', sale: false, tags: [], photo: ""
     });
-    const [createdAdvertId, setCreatedAdvertId] = useState();
-    const [error, setError] = useState(null);
+    // const [createdAdvertId, setCreatedAdvertId] = useState();
+    // const [error, setError] = useState(null);
     const [options, setOptions] = React.useState([]);
     
    
@@ -76,23 +77,24 @@ console.log(options)
     setValue({...value, photo: event.target.files[0]});
   }
 
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    try {
-          const createdAdvert = await createAdvert( value);
-          setCreatedAdvertId(createdAdvert.id);
-    } catch (error) {
-      console.log(error);
-      if (error.status === 401) {
-        return history.push('/login');
-      }
-      setError(error());
-    }
-  };
+    dispatch(createAdvert(value))
+  //   try {
+  //         const createdAdvert = await createAdvert( value);
+  //         setCreatedAdvertId(createdAdvert.id);
+  //   } catch (error) {
+  //     console.log(error);
+  //     if (error.status === 401) {
+  //       return history.push('/login');
+  //     }
+  //     setError(error());
+  //   }
+  // };
   
-  if (createdAdvertId) {
-      return <Redirect to={`/adverts/${createdAdvertId}`} />;
-    }
+  // if (createdAdvertId) {
+  //     return <Redirect to={`/adverts/${createdAdvertId}`} />;
+   }
     
     return (
         <Layout title="What are you thinking">

@@ -1,12 +1,14 @@
 import { Provider , connect, useDispatch, useSelector} from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router} from 'react-router-dom';
 
-const Root = ({ children, store }) => (
-   <Provider store={store}>
-      <Router>
-         {children}
-      </Router>
-   </Provider>
-);
+const Root = ({ children, store, history }) => {
+   return (
+      <Provider store={store}>
+         <Router history={history}>
+            {children}
+         </Router>
+      </Provider>
+   );
+};
 
 export default Root;
