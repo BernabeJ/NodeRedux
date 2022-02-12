@@ -1,6 +1,6 @@
 import { login } from "../components/auth/service";
 import { areAdvertsLoaded, getAdvert, getAdverts } from "./selectors";
-import { ADVERTS_CREATED_SUCCES, ADVERTS_LOADED, ADVERTS_LOADED_SUCCES, ADVERT_LOADED_SUCCES, AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCES, AUTH_LOGOUT, UI_RESET_ERROR } from "./types";
+import { ADVERTS_CREATED_SUCCES, ADVERTS_LOADED, ADVERTS_LOADED_SUCCES, ADVERT_DELETED_REQUEST, ADVERT_DELETED_SUCCESS, ADVERT_LOADED_SUCCES, AUTH_LOGIN_FAILURE, AUTH_LOGIN_REQUEST, AUTH_LOGIN_SUCCES, AUTH_LOGOUT, UI_RESET_ERROR } from "./types";
 
 export function authLoginRequest() {
     return {
@@ -112,3 +112,38 @@ export function uiResetError(){
     };
 }
 
+
+
+export function advertDeletedRequest() {
+  return {
+    type: ADVERT_DELETED_REQUEST,
+  };
+}
+
+export function adDeletedSuccess(ad) {
+  return {
+    type: ADVERT_DELETED_SUCCESS,
+    payload: ad,
+  };
+}
+
+export function advertDeletedFailure(error) {
+  return {
+    type: ADVERT_DELETED_SUCCESS,
+    error: true,
+    payload: error,
+  };
+}
+
+export function advertDeleted(adId) {
+  return async function (dispatch, getState, { api, history }) {
+    dispatch(advertDeletedRequest());
+    try {
+      await api.adverts.deleteAdvert(adId);
+      dispatch(adDeletedSuccess(adId));
+      history.push(`/adverts`);
+    } catch (error) {
+      dispatch(advertDeletedFailure(error));
+    }
+  };
+}

@@ -22,11 +22,11 @@ const store = configureStore({auth: !!accessToken},{history});
 
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Root store={store} history={history}>
+  <Root store={store} history={history}>
+      <React.StrictMode>
        <App />
-    </Root>
-  </React.StrictMode>, 
+  </React.StrictMode>
+    </Root>,
   document.getElementById('root')
 );
 

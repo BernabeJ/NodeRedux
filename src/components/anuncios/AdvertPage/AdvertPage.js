@@ -1,60 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Layout from "../../layout/Layout"
-import { deleteAdvert, getAdverts } from "../service";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import './AdvertPage.css'
 import { getAdvert } from "../../../store/selectors";
-import { loadAdvert } from "../../../store/actions";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { advertDeleted, loadAdvert } from "../../../store/actions";
+import useStoreAction from "../../../hooks/useStoreAction";
+import useStoreData from "../../../hooks/useStoreData";
 
 
 
-function AdvertPage({ history, ...props }) {
-  //   const [advert, setProduct] = useState();
+function AdvertPage({ history }) {
+
   const advertId = useParams(history).id;
+  const loadAdAction = useStoreAction(loadAdvert)
   console.log(advertId, 'advertID')
-  
-  // console.log(advert)
-  
-  const dispatch = useDispatch();
-  const advert = useSelector(getAdvert);
-  
-  //prueb
-  
-  //   const dispatch = useDispatch()
-  // const adverts = useSelector(getAdverts)
+  const advert = useStoreData(state =>getAdvert(state, advertId));
+  console.log(advert, 'advert')
+  const deletedAdAction = useStoreAction(advertDeleted);
   
   
-  // // const [adverts, setAdverts] = useState([]);
-  // useEffect(() => {
-    //  dispatch(loadAdverts())
-    // }, [dispatch]);
-    // console.log(adverts, 'advertsLoaded')
-    
-    
-    useEffect(() => {
-      //     async function getAd() {
-        //   try {
-          //     const ad = await getAdverts(advertId);
-          //     setProduct(ad);
-          //   } catch (error) {
-            //     if (error.status === 404){
-              //       history.replace('/404')
-    //     }else if(error.status === 401){
-    //       history.replace('/login')
-    //     }
-    //     console.error(error.message);
-    //   }
-    // }
-    // getAd();
-      dispatch(loadAdvert(advertId))
-     ;
-  }, []);
+  React.useEffect(() => {
+    loadAdAction(advertId);
+  }, [loadAdAction, advertId])
 
     
      const handleDelete = () => {
     if (window.confirm('¿seguro que desea eliminar el producto?')){
-      deleteAdvert(advertId).then(() => history.push('/'))
+     deletedAdAction(advertId)
     }
   }
 
